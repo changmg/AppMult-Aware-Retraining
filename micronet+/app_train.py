@@ -116,7 +116,7 @@ def GetOpt():
     parser.add_option('-u', '--use_ste_gradient',
                         action='store_true',
                         dest='use_ste_gradient',
-                        default=True,
+                        default=False,
                         help='use straight-through estimator for gradient')
     parser.add_option('-s', '--batch_size',
                         action='store',
@@ -237,7 +237,6 @@ def main():
     ptq = False # post-training quantization
     percentile = 0.999999 # percentile for ptq
     use_ste_gradient = options.use_ste_gradient # whether use straight-through estimator for gradient
-    discarded_columns = 3 # number of discarded columns
 
     # prepare approximate multiplication lookup tables
     lut_file_name = options.lut_file_name
@@ -258,8 +257,7 @@ def main():
         qaft=qaft,
         ptq=ptq,
         percentile=percentile,
-        use_ste_gradient=use_ste_gradient,
-        discarded_columns=discarded_columns
+        use_ste_gradient=use_ste_gradient
     )
     # print(model)
 
