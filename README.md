@@ -55,13 +55,13 @@ For more details, you can refer to the following paper:
 
 ## Download
 
-- This project contains a submodule for circuit simulation and LUT generation: open-source logic synthesis and verification tool abc
+- This project contains a submodule for circuit simulation and LUT generation: open-source logic synthesis and verification tool ABC
 
 ```shell
 git clone --recursive https://github.com/changmg/AppMult-Aware-Retraining.git
 ```
 
-Please ensure that you have added the argument "--recursive" to clone the submodule abc.
+Please ensure that you have added the argument "--recursive" to clone the submodule ABC.
 
 - Pretrained models: You can find the pretrained FP32 models used in our experiments here:
 [Pretrained models](https://github.com/changmg/AppMult-Aware-Retraining/releases/tag/v1.0.0)
@@ -111,22 +111,22 @@ python micronet+/app_train.py -f -b 7 -l ./app_mults/resub_als/Mult_7_7_MED_63.6
 ```
 where *-f* option means using a fixed random seed for the purpose of reproducing the experimental results,
 
-*-b* option specifies the bitwidth of the applied AppMult,
+*-b* option specifies the bit-width of the applied AppMult,
 
 *-l* option specifies the path to the AppMult LUT (including forward propagation AppMult values + backward propagation gradients; please refer to example 2 for the generation details),
 
 and *-p* option specifies the path to the pretrained FP32 DNN model.
 
-After 30 epoches, the accuracy will recover from about 10% to about 90%.
+After 30 epochs, the accuracy will recover from about 10% to about 90%.
 
 - To perform AppMult-aware retraining for DNNs using straight-through estimation (STE) gradient for the AppMult, a reference command is:
 
 ```shell
 python micronet+/app_train.py -u -f -b 7 -l ./app_mults/resub_als/Mult_7_7_MED_63.6771_size_178_depth_23_lutfp+bp_avg_8_8.txt -p ./pretrained/cifar10_resnet18_fp32_acc_94.06.pth
 ```
-where *-u* option means using STE estimator.
+where *-u* option means using the STE estimator.
 
-After 30 epoches, the accuracy will recover from about 10% to about 80%.
+After 30 epochs, the accuracy will recover from about 10% to about 80%.
 
 ### Example 2
 To generate the AppMult LUT (including forward propagation AppMult values + backward propagation gradients),
@@ -141,3 +141,11 @@ python scripts/gen_bp_lut.py -f ./tmp/Mult_7_7_MED_45.8873_size_189_depth_25_lut
 The first command calls *simulator.out* to simulate the AppMult *./app_mults/resub_als/Mult_7_7_MED_45.8873_size_189_depth_25_sop.blif* and generates a LUT that stores the AppMult values for each input combination, i.e., *./tmp/Mult_7_7_MED_45.8873_size_189_depth_25_lutfp.txt*
 
 The second command computes difference-based gradient approximation using a half window size of *w=8* (please refer to our paper). It generates a new file, *./tmp/Mult_7_7_MED_45.8873_size_189_depth_25_lutfp+bp_avg_8_8.txt*, including a LUT for forward propagation and two LUTs storing the gradients of the AppMult with regards to two input operands.
+
+## Misc
+- The default version is fixed for 7-bit AppMults. To test AppMults with different bit-widths (no more than 8-bit), please change the MACRO of "QUANTIZATION_BIT" to the required value in the CUDA code here:
+
+https://github.com/changmg/AppMult-Aware-Retraining/blob/master/self_ops/src/approx_mult.h#L12
+
+For example, if you want to test 8-bit AppMults, modify the CUDA code to "#define QUANTIZATION_BIT 7" and re-compile.
+Meanwhile, you also need to specify the *-b* option in the *app_train.py* to 8 (if you are testing 8-bit AppMults).
