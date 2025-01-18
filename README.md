@@ -147,5 +147,5 @@ The second command computes difference-based gradient approximation using a half
 
 https://github.com/changmg/AppMult-Aware-Retraining/blob/master/self_ops/src/approx_mult.h#L12
 
-For example, if you want to test 8-bit AppMults, modify the CUDA code to "#define QUANTIZATION_BIT 7" and re-compile.
+For example, if you want to test 8-bit AppMults, modify the CUDA code to "#define QUANTIZATION_BIT 8" and re-compile.
 Meanwhile, you also need to specify the *-b* option in the *app_train.py* to 8 (if you are testing 8-bit AppMults).
