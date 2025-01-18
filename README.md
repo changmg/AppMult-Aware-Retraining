@@ -55,7 +55,7 @@ For more details, you can refer to the following paper:
 
 ## Download
 
-This project contains a submodule for circuit simulation and LUT generation: open-source logic synthesis and verification tool abc
+- This project contains a submodule for circuit simulation and LUT generation: open-source logic synthesis and verification tool abc
 
 ```shell
 git clone --recursive https://github.com/changmg/AppMult-Aware-Retraining.git
@@ -63,6 +63,8 @@ git clone --recursive https://github.com/changmg/AppMult-Aware-Retraining.git
 
 Please ensure that you have added the argument "--recursive" to clone the submodule abc.
 
+- Pretrained models: You can find the pretrained FP32 models used in our experiments here:
+[Pretrained models](https://github.com/changmg/AppMult-Aware-Retraining/releases/tag/v1.0.0)
 
 ## Project Structure
 
@@ -124,7 +126,7 @@ python micronet+/app_train.py -u -f -b 7 -l ./app_mults/resub_als/Mult_7_7_MED_6
 ```
 where *-u* option means using STE estimator.
 
-After 30 epoches, the accuracy will recover from about 10% to about 82.89%.
+After 30 epoches, the accuracy will recover from about 10% to about 80%.
 
 ### Example 2
 To generate the AppMult LUT (including forward propagation AppMult values + backward propagation gradients),
