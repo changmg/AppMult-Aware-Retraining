@@ -280,8 +280,7 @@ def add_quant_op(
     qaft=False,
     ptq=False,
     percentile=0.9999,
-    use_ste_gradient=False,
-    discarded_columns=0
+    use_ste_gradient=False
 ):
     for name, child in module.named_children():
         # print(f'deal with module {module.__class__.__name__}.{name}, child {child.__class__.__name__}')
@@ -336,8 +335,7 @@ def add_quant_op(
                 qaft=qaft,
                 ptq=ptq,
                 percentile=percentile,
-                use_ste_gradient=use_ste_gradient,
-                discarded_columns=discarded_columns
+                use_ste_gradient=use_ste_gradient
             )
 
 
@@ -356,10 +354,9 @@ def prepare(
     qaft=False,
     ptq=False,
     percentile=0.9999,
-    use_ste_gradient=False,
-    discarded_columns=0
+    use_ste_gradient=False
 ):
-    print(f'Quantizing model with a_bits={a_bits}, w_bits={w_bits}, q_type={q_type}, q_level={q_level}, weight_observer={weight_observer}, bn_fuse={bn_fuse}, bn_fuse_calib={bn_fuse_calib}, pretrained_model={pretrained_model}, qaft={qaft}, ptq={ptq}, percentile={percentile}, use_ste_gradient={use_ste_gradient}, discarded_columns={discarded_columns}')
+    print(f'Quantizing model with a_bits={a_bits}, w_bits={w_bits}, q_type={q_type}, q_level={q_level}, weight_observer={weight_observer}, bn_fuse={bn_fuse}, bn_fuse_calib={bn_fuse_calib}, pretrained_model={pretrained_model}, qaft={qaft}, ptq={ptq}, percentile={percentile}, use_ste_gradient={use_ste_gradient}')
     if not inplace:
         model = copy.deepcopy(model)
     add_quant_op(
@@ -375,7 +372,6 @@ def prepare(
         qaft=qaft,
         ptq=ptq,
         percentile=percentile,
-        use_ste_gradient=use_ste_gradient,
-        discarded_columns=discarded_columns
+        use_ste_gradient=use_ste_gradient
     )
     return model
