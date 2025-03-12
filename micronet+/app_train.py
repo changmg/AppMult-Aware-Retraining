@@ -46,9 +46,7 @@ def calibrate(model, device, train_loader):
     print(f'Calibration finished in {time.time() - t_start:.2f} seconds')
 
 
-best_acc = 0
 def test(model, device, test_loader, epoch, model_path=None, use_top5=False):
-    global best_acc
     model.eval()
     test_loss = 0
     lossLayer = torch.nn.CrossEntropyLoss(reduction='sum')
@@ -63,13 +61,8 @@ def test(model, device, test_loader, epoch, model_path=None, use_top5=False):
             correct += pred.eq(target.view_as(pred)).sum().item()
         test_loss /= len(test_loader.dataset)
         test_acc = 100. * correct / len(test_loader.dataset)
-        if model_path is not None:
-            if test_acc > best_acc:
-                best_acc = test_acc
-                path = f'{model_path}_top1_acc_{best_acc}.pth'
-                print(f'Epoch {epoch}: Saving model to {path}')
-                torch.save(model.state_dict(), path)
-        print(f'Epoch {epoch}: Test set: Average loss: {test_loss}, Accuracy: {test_acc}%, Best accuracy: {best_acc}%')
+        # although test_acc is reported in every epoch, it is not used in training
+        print(f'Epoch {epoch}: Test set: Average loss: {test_loss}, Accuracy: {test_acc}%')
     else:
         correct_top5 = 0
         correct_top1 = 0
@@ -88,13 +81,8 @@ def test(model, device, test_loader, epoch, model_path=None, use_top5=False):
         test_loss /= len(test_loader.dataset)
         test_acc_top5 = 100. * correct_top5 / len(test_loader.dataset)
         test_acc_top1 = 100. * correct_top1 / len(test_loader.dataset)
-        if model_path is not None:
-            if test_acc_top5 > best_acc:
-                best_acc = test_acc_top5
-                path = f'{model_path}_top5_acc_{best_acc}.pth'
-                print(f'Epoch {epoch}: Saving model to {path}')
-                torch.save(model.state_dict(), path)        
-        print(f'Epoch {epoch}: Test set: Average loss: {test_loss}, Top-1 Accuracy: {test_acc_top1}%, Top-5 Accuracy: {test_acc_top5}%, Best top-5 accuracy: {best_acc}%')
+        # although test_acc is reported in every epoch, it is not used in training
+        print(f'Epoch {epoch}: Test set: Average loss: {test_loss}, Top-1 Accuracy: {test_acc_top1}%, Top-5 Accuracy: {test_acc_top5}%')
 
 
 def GetOpt():
