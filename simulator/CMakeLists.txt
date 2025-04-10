@@ -6,6 +6,9 @@ cmake_minimum_required(VERSION 3.16)
 # Set the project name
 project(simulator)
 
+# add sub directory
+add_subdirectory(abc)
+
 # Set top directory
 set(TOP_DIR ${PROJECT_SOURCE_DIR}/..)
 
